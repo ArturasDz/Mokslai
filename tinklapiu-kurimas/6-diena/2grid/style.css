@@ -1,0 +1,33 @@
+main {
+    padding: 100pt;
+    background-color: rgb(207, 207, 207);
+}
+.item1 {
+    grid-area: one;
+}
+
+.item2 {
+    grid-area: two;  
+}
+.item3 {
+    grid-area: three;  
+}
+
+.item4 {
+    grid-area: four; 
+}
+
+.item5 {
+    grid-area: five;
+}
+
+.item1 img {
+    height: 100%;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-areas: 
+    "one two three"
+    "one four five";
+}

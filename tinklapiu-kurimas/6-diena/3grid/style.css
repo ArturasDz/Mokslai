@@ -1,0 +1,29 @@
+main {
+    padding: 150pt;
+    background-color: antiquewhite;
+}
+.item1 {
+    grid-area: one;
+}
+
+.item2 {
+    grid-area: two;  
+}
+.item2 img {
+    border-radius: 50%;
+    width: 750px;
+    height: 500px;
+}
+.item2 p {
+    font-size: 20pt;
+    text-align: center;
+}
+.item3 {
+    grid-area: three;  
+}
+.grid-container {
+    display: grid;
+    grid-template-areas: 
+    "one two"
+    "one three";
+}
