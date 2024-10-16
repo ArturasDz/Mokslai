@@ -1,0 +1,36 @@
+body {
+    margin: 20pt;
+}
+.icon {
+    width: 30pt;
+    height: 30pt;
+    fill: sandybrown;
+    stroke: sandybrown;
+    float:left;
+    position: relative;
+    top: 2pt;
+  }
+  h1, h2 {
+    margin: 0;
+  }
+  h2 {
+    color: gray;
+    padding-left: 2rem;
+    font-size: 24pt;
+    padding-top: 1pt;
+  }
+  .number {
+    float: left;
+    background-color: brown;
+    border-radius: 50%;
+    font-size: 18pt;
+    color: white;
+    width: 23pt;
+    text-align: center;
+    position: relative;
+    left: 5pt;
+    top: 3pt;
+  }
+main {
+    background-color:rgb(255, 250, 243);
+}
