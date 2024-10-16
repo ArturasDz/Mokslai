@@ -1,0 +1,51 @@
+* {
+    margin: 1pt;
+}
+nav {
+  background-color: #808080;
+  display: flex;
+  text-align: center;
+  padding-inline: 30pt;
+  padding-block: 5pt;
+}
+.nav-links {
+  align-content: center;
+}
+nav li {
+  float: left;
+  margin-inline: 5pt;
+}
+li a {
+  text-decoration: none;
+  font-size: 20pt;
+  margin: 0;
+}
+nav ul {
+  list-style-type: none;
+  padding: 5pt;
+}
+nav img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: #000000 solid 2pt;
+}
+.green-border {
+  border: #008000 solid 10pt;
+  border-style: dotted;
+  padding: 40pt;
+  display: block;
+  margin: auto;
+  margin-top: 12rem;
+  width: 40rem;
+}
+.space-cat {
+  position: relative;
+  top: -12rem;
+  left: 2rem;
+}
+.dog {
+  position: relative;
+  top: 17rem;
+  left: 6rem;
+}
