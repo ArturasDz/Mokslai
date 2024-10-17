@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        margin-inline: 20pt;
+      }
+       .from-left{
+        text-align: left;
+       margin: 20pt;
+      }
+  table {
+        border-collapse: collapse;
+        margin-inline: 20pt;
+  }
+  caption, th, td {
+    text-align: left;
+  }
+th {
+    padding-inline: 10pt;
+}
+tr, td {
+    padding-inline: 3pt;
+    padding-block: 18pt;
+}
+.td_top {
+  vertical-align: text-top;
+}
+div.gray-color {
+  color: gray;
+}
+tr.bordered {
+    border-bottom: 1px solid gray;
+}
+
+
+
+    </style>
+  </head>
+  <body>
+  <div class="from-left">
+    
+        <h1>Dance Registration</h1>
+        <p>
+          Fill the registration form below keenly to enter the dancing
+          competition
+        </p>
+    </div>
+    <hr>
+    <form>
+      <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="td_top">Name</td>
+          <td>
+              <div class="gray-color">
+              <input type="text" name="username" /><br>First Name
+            </div>
+              </td>
+              <td>
+                <div class="gray-color">
+                <input type="text" name="lastname"><br>Last Name
+              </div>
+          </td>
+        </tr>
+        <tr>
+            <td class="td_top">E-mail</td>
+            <td >
+              <div class="gray-color">
+                <input type="text" name="username" placeholder="ex: myname@example.com"/><br>example@example.com
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="td_top">Phone Number</td>
+            <td>
+              <div class="gray-color">
+                <input type="text" name="username" size="4" /><br>Area Code
+              </div>
+              
+            </td>
+            <td>
+              <div class="gray-color">
+                <input type="text" name="lastname"><br>Phone Number
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="td_top">Gender</td>
+            <td>
+              
+                <input type="radio" name="sex" value="male">Male
+              
+            </td>
+            <td style="text-align: right;">
+            
+                <input type="radio" name="sex" value="male">Female
+              
+            </td>
+          </tr>
+          <tr class="bordered">
+            <td class="td_top">Address</td>
+            <td>
+              <div class="gray-color">
+                <input type="text" name="address"><br>Street Address
+              </div>
+                <br>
+                <div class="gray-color">
+                  <input type="text" name="address line 2"><br>Street Address Line 2
+                </div>
+                <br>
+                <div class="gray-color">
+                  <input type="text" name="city"><br>City
+                </div>
+                  <br>
+                  <div class="gray-color">
+                    <input type="text" name="Postal"> <br>
+                    Postal / Zip code
+                  </div>
+            </td>
+            <td>
+              <div class="gray-color">
+                    <br><br><br><br><input type="text" name="state">
+                    <br>State / Province
+                  </div>
+                  <br>
+            </td>
+          </tr>
+          <tr>
+            <td class="td_top">Gender</td>
+            <td>
+              
+                <input type="radio" value="salsa">Salsa
+                <br>
+                <input type="radio" value="bachata">Bachata
+                <br>
+                <input type="radio" value="tango">Tango
+                <br>
+                <input type="radio" value="hip hop">Hip Hop
+                <br>
+                <input type="radio" value="club">Club
+                <br>
+                <input type="radio" value="other"><input size="8" type="text" name="state" placeholder="Other">
+            </td>
+          </tr>
+          <tr>
+            <td class="td_top">Start Day & <br>Time</td>
+            <td>
+              <input type="date" name="start-day">
+              <input type="time" name="start-time">
+            </td>
+        
+          </tr>
+          <tr>
+            <td class="td_top">Comments</td>
+            <td>
+  <textarea name="message" rows="5" cols="30">
+  </textarea>
+</td>  
+          </tr>
+      </tbody>
+    </table>
+  </form>
+  </body>
+</html>
