@@ -1,0 +1,89 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+h1,
+h2 {
+  color: blueviolet;
+}
+nav ul li {
+  display: inline-block;
+  color: white;
+  padding-inline: 40px;
+  padding-block: 5px;
+}
+h1 {
+  margin-left: 20px;
+  font-family: "Kaushan Script", cursive;
+  font-weight: 600;
+  font-style: normal;
+}
+nav {
+  background-color: blueviolet;
+  text-align: center;
+  padding-block: 10px;
+  font-weight: 600;
+}
+.container {
+  position: relative;
+  text-align: center;
+  color: white;
+}
+.container img {
+  height: 300px;
+}
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: white;
+  font-size: 30px;
+  font-weight: 600;
+}
+main ul li:first-child {
+  font-weight: bold;
+  font-size: larger;
+}
+main h2 {
+  padding-block: 20px;
+  text-align: center;
+}
+main img {
+  width: 225px;
+  height: 225px;
+}
+main ul li:last-child {
+  margin-bottom: 20px;
+}
+main ul li {
+  list-style-type: none;
+}
+main img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+main figcaption {
+  text-align: center;
+}
+main ul {
+  display: inline-block;
+  margin-inline: 0 120px;
+  text-align: left;
+}
+
+nav,
+.centered,
+h2 {
+  font-family: "Open Sans";
+  font-style: normal;
+}
+
+@media screen and (min-width: 768px) {
+  .container2 {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+  }
+}
