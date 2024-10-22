@@ -1,0 +1,28 @@
+.flex-form {
+  display: flex;
+  border: 10px solid rgb(0, 0, 0, 0.3);
+  border-radius: 5px;
+  position: absolute;
+  top: 40%;
+  height: 50px;
+}
+.dog {
+  display: block;
+  margin-inline: auto;
+}
+.cover {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+label[for="from"] {
+  background-color: white;
+  align-content: center;
+  text-align: center;
+  width: 40px;
+}
+input[type="submit"] {
+  background-color: rgb(255, 53, 53);
+  border: solid rgb(255, 53, 53);
+  color: white;
+}
