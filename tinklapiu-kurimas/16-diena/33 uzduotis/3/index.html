@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="lt">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Sumos skaičiuotuvas</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+  </head>
+
+  <body>
+    <div class="container">
+      <form style="margin-top: 40px" name="form" id="form1">
+        <div class="row justify-content-md-center">
+          <div class="col col-lg-2">
+            <input type="text" class="form-control" name="firstNumber" />
+          </div>
+          <div class="col col-md-auto">
+            <p>+</p>
+          </div>
+          <div class="col col-lg-2">
+            <input type="text" class="form-control" name="secondNumber" />
+          </div>
+          <div class="col">
+            <button type="submit" class="btn btn-primary">=</button>
+          </div>
+        </div>
+      </form>
+      <p>Sum is: <span id="sum"></span></p>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
