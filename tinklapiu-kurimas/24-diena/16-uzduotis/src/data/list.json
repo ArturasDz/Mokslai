@@ -1,0 +1,20 @@
+[
+  {
+    "id": "1",
+    "title": "HTML",
+    "img": "src/assets/html_photo.jpg",
+    "content": "Aš mokausi HTML"
+  },
+  {
+    "id": "2",
+    "title": "CSS",
+    "img": "src/assets/css_photo.jpg",
+    "content": "Aš mokausi CSS"
+  },
+  {
+    "id": "3",
+    "title": "JavaScript",
+    "img": "src/assets/javascript_photo.jpeg",
+    "content": "Aš mokausi JavaScript"
+  }
+]
