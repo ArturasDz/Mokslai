@@ -1,0 +1,28 @@
+{
+  "books": [
+    {
+      "id": "3447",
+      "title": "BUSINESS SUCCESS",
+      "author": "Author",
+      "category": "Action",
+      "price": "25",
+      "cover": "https://www.creativeparamita.com/wp-content/uploads/2020/05/Business-Success-1.jpg"
+    },
+    {
+      "id": "2531",
+      "title": "BUSINESS SUCCESS",
+      "author": "Author",
+      "category": "Action",
+      "price": "14",
+      "cover": "https://www.creativeparamita.com/wp-content/uploads/2020/05/Business-Success-1.jpg"
+    },
+    {
+      "id": "2142",
+      "title": "BUSINESS SUCCESS",
+      "author": "Author",
+      "category": "Action",
+      "price": "12",
+      "cover": "https://www.creativeparamita.com/wp-content/uploads/2020/05/Business-Success-1.jpg"
+    }
+  ]
+}
