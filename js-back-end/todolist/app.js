@@ -18,6 +18,7 @@ const tasks = JSON.parse(fs.readFileSync(dir));
 //!*!*!*!*!*!*!*!*!*
 
 //contributors *****
+
 //GET ALL TASKS
 const getAllTasks = (req, res) => {
   res.status(200).json({
@@ -27,6 +28,7 @@ const getAllTasks = (req, res) => {
     data: tasks,
   });
 };
+
 //POST TASK
 const postTask = (req, res) => {
   const newID = tasks[tasks.length - 1].id + 1;
@@ -50,25 +52,39 @@ const postTask = (req, res) => {
   });
 };
 
+//EDIT A TASK
 const updateTask = (req, res) => {
-  const { id } = req.params;
-  const newTask = req.body;
-  const taskId = parseInt(id);
-  if (isNaN(taskId)) {
-    res.status(400).json({ error: "Invalid ID" });
-  }
-  const task = task.find((t) => t.id === taskId);
-  if (!task) {
+  let todo = tasks.find((todo) => todo.id == req.params.id);
+  // fs.writeFile(dir, JSON.stringify(tasks), () => {
+  if (todo) {
+    todo.task = req.body.task;
+    res.json(tasks);
+  } else {
     res.status(404).json({
-      status: "failed",
-      message: "Task not found",
+      message: "task does not exist",
     });
   }
-  res.json({ message: "Task update", task });
 };
 
-app.route("/todos").get(getAllTasks).post(postTask);
-app.route("/todos/:id").patch(updateTask);
+//DELETE A TASK
+const deleteTask = (req, res) => {
+  const id = +req.params.id;
+  const filteredTasks = tasks.filter((todo) => todo.id !== Number(id));
+  // fs.writeFile(dir, JSON.stringify(tasks), () => {
+  if (id < tasks.length + 1) {
+    res.status(200).json({
+      data: filteredTasks,
+    });
+  } else {
+  res.status(404).json({
+    status: "Failed",
+    message: `There is no task with this Id: ${id}`,
+  });
+}
+};
+
+app.route("/api/v1/todos").get(getAllTasks).post(postTask);
+app.route("/api/v1/todos/:id").patch(updateTask).delete(deleteTask);
 
 app.listen(port, () => {
   console.log(`App running on port ${port}`);
