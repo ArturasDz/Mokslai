@@ -1,17 +1,23 @@
 const express = require("express");
 
+// IMPORT CONTROLLERS
 const workoutController = require("../controllers/workoutController");
 
-const { getAllWorkouts, getWorkoutById, editWorkout, deleteWorkout } =
-  workoutController;
+const {
+  getWorkouts,
+  getWorkoutFromId,
+  upWorkout,
+  delWorkout,
+  addWorkoutToU,
+  getWorkoutsByUId,
+} = workoutController;
 
+// ROUTES
 const workoutRouter = express.Router();
 
-workoutRouter
-  .route("/")
-  .get(getAllWorkouts)
-  .get(getWorkoutById)
-  .patch(editWorkout)
-  .delete(deleteWorkout);
+// WORKOUT ROUTES
+workoutRouter.route("/").get(getWorkouts);
+workoutRouter.route("/workouts").get(getWorkoutFromId).patch(upWorkout).delete(delWorkout);
+workoutRouter.route("/user/:id").get(getWorkoutsByUId).post(addWorkoutToU);
 
-Module.exports = workoutRouter;
+module.exports = workoutRouter;

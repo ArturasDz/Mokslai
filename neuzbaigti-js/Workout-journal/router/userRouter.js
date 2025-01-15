@@ -1,11 +1,25 @@
 const express = require("express");
 
-const userController = require("../controllers/userController")
+// IMPORT CONTROLLERS
+const userController = require("../controllers/userController");
+const { deletedMiddleware } = require("../middlewares/routeMiddlewares");
 
-const {getAllUsers, getUserById, getUserByUsername, getUserWithJwt, getUserWorkouts, postWorkoutToUser  } = userController
+const {
+  getUsers,
+  getUser,
+  getByUsername,
+  makeUser,
+  logUser,
+  // getUserProfile,
+} = userController;
 
+// ROUTES
 const userRouter = express.Router();
 
-userRouter.routes('/').get(getAllUsers).get(getUserById).get(getUserByUsername).get(getUserWithJwt).get(getUserWorkouts).post(postWorkoutToUser)
+// USER ROUTES
+userRouter.route("/").get(getUsers)
+userRouter.route("/register").post(deletedMiddleware, makeUser)
+userRouter.route("/login").post(logUser);
+userRouter.route("/users").get(getUser).get(getByUsername);
 
-Module.exports = userRouter
+module.exports = userRouter;
