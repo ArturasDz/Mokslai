@@ -10,16 +10,29 @@
 const { sql } = require("../dbConnection");
 
 //GET ALL TOURS
-exports.getAllTours = async () => {
+exports.getAllTours = async (limit, offset) => {
+  const result = await sql.begin(async sql => {
   const tourList = await sql`
     SELECT tours.name as tour_name, categories.name, difficulties.level
     FROM tours
     JOIN difficulties ON tours.difficulty_id=difficulties.id
     JOIN categories ON tours.category_id=categories.id
+    ${
+      limit !== undefined && offset !== undefined
+        ? sql`limit ${limit} offset ${offset}`
+        : sql``
+    }`;
+
+    const [total] = await sql`
+    SELECT COUNT(*)
+    FROM tours
     `;
 
-  return tourList;
+    return {tourList, totalCount: total }
+  });
+return result;
 };
+
 
 //GET TOURS BY CATEGORY
 exports.getToursByCat = async (categoryid) => {
@@ -124,14 +137,20 @@ exports.eraseTour = async (id) => {
 };
 
 exports.filterTours = async (filter) => {
+  const sortValue = filter.sort.toUppercase();
+  const validDirection = ["ASC", "DESC"];
+  const sortDirection = validDirection.includes(sortValue) ? sortValue : "ASC";
   const tours = await sql`
   SELECT tours.*, difficulties.level as difficulty, categories.name as category
-    FROM tours
-    JOIN difficulties ON tours.difficulty_id = difficulties.id
-    JOIN categories ON tours.category_id = categories.id
-    WHERE
-    tours.duration <= ${filter.duration} AND difficulties.level = ${filter.difficulty} AND tours.price <= ${filter.price}    
-  `;
+  FROM tours
+  JOIN difficulties ON tours.difficulty_id = difficulties.id
+  JOIN categories ON tours.category_id = categories.id
+  WHERE
+  tours.duration <= ${filter.duration} AND difficulties.level = ${
+    filter.difficulty
+  } AND tours.price <= ${filter.price}    
+  ORDER BY tours.price ${sql.unsafe(sortDirection)}
+    `;
 
   return tours;
 };

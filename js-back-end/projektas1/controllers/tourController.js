@@ -15,10 +15,24 @@ const {
 //GET ALL TOURS
 exports.getAllTours = async (req, res) => {
   try {
-    const tours = await getAllTours();
+    const filter = req.query;
+    console.log(filter); //{limit:'5', page:'2'}
+    let page = parseInt(filter.page);
+    let limit = parseInt(filter.limit);
+
+    const offset = (page - 1) * limit;
+    if (page < 1 || limit < 1) {
+      return res.status(400).json({
+        status: "fail",
+        message: "Invalid page or limit value",
+      });
+    }
+
+    const tours = await getAllTours(limit, offset);
     res.status(200).json({
       status: "success",
-      data: tours,
+      data: tours.tourList,
+      total: tours.totalCount.count
     });
   } catch (error) {
     res.status(500).json({
@@ -192,71 +206,72 @@ exports.deleteTour = async (req, res) => {
 };
 
 //FILTERED TOURS
-// exports.getFilteredTours = async (req, res) => {
-//  try {
-//    const filter = req.query;
-//     const filteredTours = filterTours(filter);
-
-//     console.log(filteredTours);
-//   } catch (error) {
-//     res.status(500).json({
-//       status: "fail",
-//       message: error.message,
-//     });
-//   }
-// };
-
-//2. filter tours using query string
 exports.getFilteredTours = async (req, res) => {
   try {
     const filter = req.query;
-    console.log(filter);
+    //filter:
+    const filteredTours = filterTours(filter);
 
-    // If no query string, return all tours
-    if (Object.keys(filter).length === 0) {
-      const tours = await getAllTours();
-      res.status(200).json({
-        status: "success",
-        data: tours,
-      });
-      return;
-    }
-
-    // Validate filter fields
-    const allowedFields = ["duration", "difficulty", "price", "sort"];
-    for (const key of Object.keys(filter)) {
-      if (!allowedFields.includes(key)) {
-        return res.status(400).json({
-          status: "fail",
-          message: `Invalid filter field: '${key}'. Allowed fields are: ${allowedFields.join(
-            ", "
-          )}`,
-        });
-      }
-    }
-
-    // Validate numeric parameters
-    if (!Number(filter.duration) || filter.duration < 0) {
-      throw new Error("Invalid duration");
-    }
-    if (!Number(filter.price) || filter.price < 0) {
-      throw new Error("Invalid price");
-    }
-
-    // Validate difficulty against allowed values
-    const validDifficulties = ["Easy", "Medium", "Difficult"];
-    if (!validDifficulties.includes(filter.difficulty)) {
-      throw new Error("Invalid difficulty");
-    }
-
-    // If query string, return filtered tours
-    const filteredTours = await filterTours(filter);
-
-    res.status(200).json({
-      status: "success",
-      data: filteredTours,
-    });
+    console.log(filteredTours);
   } catch (error) {
-    res.status(500).send(error.message);
+    res.status(500).json({
+      status: "fail",
+      message: error.message,
+    });
   }
 };
+
+// //2. filter tours using query string
+// exports.getFilteredTours = async (req, res) => {
+//   try {
+//     const filter = req.query;
+//     console.log(filter);
+
+//     // If no query string, return all tours
+//     if (Object.keys(filter).length === 0) {
+//       const tours = await getAllTours();
+//       res.status(200).json({
+//         status: "success",
+//         data: tours,
+//       });
+//       return;
+//     }
+
+//     // Validate filter fields
+//     const allowedFields = ["duration", "difficulty", "price", "sort"];
+//     for (const key of Object.keys(filter)) {
+//       if (!allowedFields.includes(key)) {
+//         return res.status(400).json({
+//           status: "fail",
+//           message: `Invalid filter field: '${key}'. Allowed fields are: ${allowedFields.join(
+//             ", "
+//           )}`,
+//         });
+//       }
+//     }
+
+//     // Validate numeric parameters
+//     if (!Number(filter.duration) || filter.duration < 0) {
+//       throw new Error("Invalid duration");
+//     }
+//     if (!Number(filter.price) || filter.price < 0) {
+//       throw new Error("Invalid price");
+//     }
+
+//     // Validate difficulty against allowed values
+//     const validDifficulties = ["Easy", "Medium", "Difficult"];
+//     if (!validDifficulties.includes(filter.difficulty)) {
+//       throw new Error("Invalid difficulty");
+//     }
+
+//     // If query string, return filtered tours
+//     const filteredTours = await filterTours(filter);
+
+//     res.status(200).json({
+//       status: "success",
+//       data: filteredTours,
+//     });
+//   } catch (error) {
+//     res.status(500).send(error.message);
+//   }
+// };

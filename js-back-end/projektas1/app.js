@@ -4,7 +4,7 @@ const tourRouter = require("./routers/tourRouter")
 
 //server
 const app = express();
-
+//isparseina iš body į objektus (body parser)
 app.use(express.json());
 
 app.use(sayHello, addRequestedDate);
