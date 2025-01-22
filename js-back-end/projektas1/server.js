@@ -1,6 +1,5 @@
 const app = require("./app");
 const dotenv = require("dotenv");
-
 const { sql, testConnection } = require("./dbConnection");
 
 //load env
