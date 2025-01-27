@@ -4,19 +4,6 @@ const { getUserByEmail } = require("../models/userModel");
 const validatorNewUser = [
   body().notEmpty().withMessage("User body must contain data "),
 
-  body("email")
-    .notEmpty()
-    .withMessage("Email is required")
-    .isEmail()
-    .withMessage("Email is not valid")
-    .normalizeEmail()
-    .custom(async (value) => {
-      const user = await getUserByEmail(value);
-
-      if (user) throw new Error("User already exists");
-      return true; //validation passed
-    }),
-
   body("username").notEmpty().withMessage("Username is required"),
 
   body("password")
@@ -27,7 +14,6 @@ const validatorNewUser = [
     .custom((value, { req }) => {
       if (value !== req.body.passwordconfirm)
         throw new Error("Passwords do not match");
-
       return true
     }),
 ];

@@ -11,10 +11,6 @@ const validate = (req, res, next) => {
       .join("; ");
 
     if (!errors.isEmpty()) {
-      // return res.status(400).json({
-      //   status: 'fail',
-      //   errors: errors.array(),
-      // });
       throw new AppError(errorString, 400);
     }
     next();
