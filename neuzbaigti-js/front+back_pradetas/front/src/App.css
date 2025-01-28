@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+* {
+  margin: 0px
+}
+.mainHeading {
+  font-size: 60px;
+  font-weight:bold;
+  font-family: 'Inconsolata', monospace;
+  line-height: 110%;
+  letter-spacing: -1px;
+}
+.subHeading {
+  font-size: 24px;
+  font-family: 'Inconsolata', monospace;
+  font-weight: normal;
+  line-height: 120%;
+  letter-spacing: -0.5px;
+  color: #D1D0D5
+}
+header h1 {
+  font-size: 40px;
+  letter-spacing: -1px;
+  line-height: 110%;
+  color: white;
+  padding-top: 20px;
+  padding-bottom: 50px;
+  font-family: 'Inconsolata', monospace;
+}
+
+header {
+  text-align: center;
+}
+
+header p {
+  color: white;
+}
+
+main form label {
+  color: #ffffff;
+  margin-left: 10px;
+  margin-top: 7px;
+  font-size: 20px;
+  line-height: 110%;
+  letter-spacing: -0.5px;
+  font-family: 'Inconsolata', monospace;
+}
+
+main form input {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;;
+  width: fill;
+  height: 54px;
+  border: rgb(210, 209, 214, 0.2) 2px solid;
+  padding: 10px;
+  margin: 10px;
+}
+main form input::placeholder {
+  color: #D1D0D5;
+  font-size: 18px;
+  line-height: 120%;
+  letter-spacing: 0;
+}
+
+button {
+  background-color: #f57463;
+  border-radius: 12px;
+  width: fill;
+  height: 54px;
+  border: none;
+  padding: 10px;
+  margin: 10px;
+  font-size: 20px;
+  color: #0d082d;
+  line-height: 110%;
+  letter-spacing: -0.5px;
+  font-family: 'Inconsolata', monospace;
+  font-weight: bold;
+}
