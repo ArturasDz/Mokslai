@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+/* Global Styles for Light and Dark Themes */
+body.light {
+    background-color: white;
+    color: black;
+  }
+  
+  body.dark {
+    background-color: black;
+    color: white;
+  }
+  
