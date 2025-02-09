@@ -1,0 +1,163 @@
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import AppointmentForm from './AppointmentForm';
+import { format } from 'date-fns';
+const API_URL = import.meta.env.VITE_API_URL;
+
+function AppointmentList() {
+  const [appointments, setAppointments] = useState([]);
+  const [showForm, setShowForm] = useState(false);
+  const [sortBy, setSortBy] = useState('date');
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchAppointments();
+  }, []);
+
+  const fetchAppointments = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const { data: response } = await axios.get(`${API_URL}/appointments`, {
+        withCredentials: true
+      });
+      setAppointments(response.data || []); // Užtikriname, kad visada bus masyvas
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setError(error.response?.data?.message || 'Failed to fetch appointments');
+      } else {
+        setError('An unexpected error occurred');
+      }
+      setAppointments([]); // Klaidos atveju nustatome tuščią masyvą
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`${API_URL}/appointments/${id}`, {
+        withCredentials: true
+      });
+      fetchAppointments();
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setError(error.response?.data?.message || 'Failed to delete appointment');
+      } else {
+        setError('An unexpected error occurred');
+      }
+    }
+  };
+
+  const sortAppointments = (appointmentsToSort) => {
+    if (!Array.isArray(appointmentsToSort)) return [];
+    
+    return [...appointmentsToSort].sort((a, b) => {
+      switch (sortBy) {
+        case 'date':
+          return new Date(a.date) - new Date(b.date);
+        case 'petName':
+          return (a.pet_name || '').localeCompare(b.pet_name || '');
+        case 'ownerName':
+          return (a.owner_email || '').localeCompare(b.owner_email || '');
+        default:
+          return 0;
+      }
+    });
+  };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-700"></div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="container mx-auto p-4 max-w-4xl">
+      <h1 className="text-3xl text-center text-purple-800 font-bold mb-6">
+        Pets Medicare
+      </h1>
+      
+      <button 
+        onClick={() => setShowForm(true)}
+        className="w-full bg-purple-700 text-white py-2 mb-6 rounded-lg hover:bg-purple-800 transition-colors flex items-center justify-center gap-2"
+      >
+        <span className="text-xl">+</span> Add Appointment
+      </button>
+
+      {error && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded mb-4">
+          {error}
+        </div>
+      )}
+
+      {showForm && (
+        <AppointmentForm 
+          onClose={() => setShowForm(false)}
+          onSubmit={fetchAppointments}
+        />
+      )}
+
+      <div className="flex justify-end mb-4">
+        <select 
+          className="border p-2 rounded bg-purple-700 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value)}
+        >
+          <option value="date">Sort by: Date</option>
+          <option value="petName">Sort by: Pet Name</option>
+          <option value="ownerName">Sort by: Owner Name</option>
+        </select>
+      </div>
+
+      <div className="space-y-4">
+        {sortAppointments(appointments).map((appointment) => (
+          <div 
+            key={appointment.id} 
+            className="border rounded-lg p-4 relative hover:shadow-lg transition-shadow bg-white"
+          >
+            <button
+              onClick={() => handleDelete(appointment.id)}
+              className="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-xl"
+              title="Delete appointment"
+            >
+              ×
+            </button>
+            <h3 className="text-xl text-purple-700 font-semibold">
+              {appointment.pet_name}
+            </h3>
+            <p className="text-gray-600">
+              Owner: {appointment.owner_email}
+            </p>
+            <p className="text-gray-700 mt-2">
+              {appointment.notes}
+            </p>
+            <p className="text-right text-gray-500 mt-2">
+              {format(new Date(appointment.date), 'MMM-d h:mma')}
+            </p>
+            <div className="absolute top-2 right-8 text-sm">
+              <span className={`px-2 py-1 rounded-full ${
+                appointment.status === 'confirmed' ? 'bg-green-100 text-green-800' :
+                appointment.status === 'cancelled' ? 'bg-red-100 text-red-800' :
+                'bg-yellow-100 text-yellow-800'
+              }`}>
+                {appointment.status || 'pending'}
+              </span>
+            </div>
+          </div>
+        ))}
+
+        {appointments.length === 0 && !loading && (
+          <div className="text-center text-gray-500 py-8">
+            No appointments found
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default AppointmentList;
