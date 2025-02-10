@@ -51,7 +51,7 @@ function SignupForm() {
   };
   return (
     <>
-      <h1 className="text-6xl text-center font-bold mb-8 mt-4 hover:text-blue-600">Sign Up</h1>
+      <h1 className="text-6xl text-center font-bold mb-8 mt-4 hover:text-blue-600">Register</h1>
       <div className="flex items-center justify-center rounded-xl pb-6">
         <form onSubmit={handleSubmit(onSubmit)} className="max-w-sm mx-auto">
           <div className="text-red-500 text-xl text-center">{error}</div>

@@ -2,10 +2,9 @@ const { sql } = require("../dbConnection");
 
 exports.getAllForAdmin = async (limit = 10, offset = 0) => {
   const data = await sql`
-    SELECT appointments.*, pets.name as pet_name, users.email as owner_email 
+    SELECT appointments.*, users.email as owner_email 
     FROM appointments
-    JOIN pets ON appointments.pet_id = pets.id
-    JOIN users ON pets.owner_id = users.id
+    LEFT JOIN users ON appointments.user_id = users.id
     ORDER BY appointments.date DESC
     LIMIT ${limit} OFFSET ${offset}
   `;
@@ -13,85 +12,68 @@ exports.getAllForAdmin = async (limit = 10, offset = 0) => {
   const [total] = await sql`
     SELECT COUNT(*) FROM appointments
   `;
-
   return {
     data,
-    total: total.count
+    total: total.count,
   };
 };
 
 exports.getAllForUser = async (userId, limit = 10, offset = 0) => {
   const data = await sql`
-    SELECT appointments.*, pets.name as pet_name
+    SELECT appointments.*
     FROM appointments
-    JOIN pets ON appointments.pet_id = pets.id
-    WHERE pets.owner_id = ${userId}
+    WHERE user_id = ${userId}
     ORDER BY appointments.date DESC
     LIMIT ${limit} OFFSET ${offset}
   `;
-
   const [total] = await sql`
     SELECT COUNT(*) 
     FROM appointments
-    JOIN pets ON appointments.pet_id = pets.id
-    WHERE pets.owner_id = ${userId}
+    WHERE user_id = ${userId}
   `;
-
   return {
     data,
-    total: total.count
+    total: total.count,
   };
 };
 
 exports.getByIdAdmin = async (id) => {
   const [appointment] = await sql`
-    SELECT appointments.*, pets.name as pet_name, users.email as owner_email
+    SELECT appointments.*,users.email as owner_email
     FROM appointments
-    JOIN pets ON appointments.pet_id = pets.id
-    JOIN users ON pets.owner_id = users.id
     WHERE appointments.id = ${id}
-  `;
-  return appointment;
-};
-
-exports.getByIdUser = async (id, userId) => {
-  const [appointment] = await sql`
-    SELECT appointments.*, pets.name as pet_name
-    FROM appointments
-    JOIN pets ON appointments.pet_id = pets.id
-    WHERE appointments.id = ${id}
-    AND pets.owner_id = ${userId}
   `;
   return appointment;
 };
 
 exports.getByDateRangeAdmin = async (startDate, endDate) => {
   return await sql`
-    SELECT appointments.*, pets.name as pet_name, users.email as owner_email
+    SELECT appointments.*,users.email as owner_email
     FROM appointments
-    JOIN pets ON appointments.pet_id = pets.id
-    JOIN users ON pets.owner_id = users.id
     WHERE appointments.date BETWEEN ${startDate} AND ${endDate}
     ORDER BY appointments.date ASC
   `;
 };
 
-exports.getByDateRangeUser = async (userId, startDate, endDate) => {
+exports.getByDateRangeUser = async (startDate, endDate) => {
   return await sql`
-    SELECT appointments.*, pets.name as pet_name
+    SELECT appointments.*
     FROM appointments
-    JOIN pets ON appointments.pet_id = pets.id
-    WHERE pets.owner_id = ${userId}
     AND appointments.date BETWEEN ${startDate} AND ${endDate}
     ORDER BY appointments.date ASC
   `;
 };
 
-exports.create = async (petId, date, notes) => {
+exports.create = async (pet_name, username, date, time, notes) => {
   const [appointment] = await sql`
-    INSERT INTO appointments (pet_id, date, notes)
-    VALUES (${petId}, ${date}, ${notes})
-    RETURNING *
+    INSERT INTO appointments (user_id, pet_name, date, time, notes) 
+    VALUES (
+      (SELECT id FROM users WHERE username = ${username}),
+      ${pet_name},
+      ${date},
+      ${time},
+      ${notes}
+    ) RETURNING *
   `;
   return appointment;
 };
@@ -114,10 +96,7 @@ exports.updateByUser = async (id, userId, date, notes, rating) => {
     SET date = COALESCE(${date}, appointments.date),
         notes = COALESCE(${notes}, appointments.notes),
         rating = COALESCE(${rating}, appointments.rating)
-    FROM pets
-    WHERE appointments.id = ${id} 
-    AND appointments.pet_id = pets.id 
-    AND pets.owner_id = ${userId}
+    WHERE appointments.id = ${id} and appointments.user_id = ${userId}
     RETURNING *
   `;
   return appointment;
@@ -133,18 +112,8 @@ exports.deleteByAdmin = async (id) => {
 exports.deleteByUser = async (id, userId) => {
   const [result] = await sql`
     DELETE FROM appointments
-    USING pets
-    WHERE appointments.id = ${id} 
-    AND appointments.pet_id = pets.id 
-    AND pets.owner_id = ${userId}
+    WHERE appointments.id = ${id} and appointments.user_id = ${userId}
     RETURNING *
   `;
   return result;
-};
-
-exports.verifyPetOwner = async (petId, userId) => {
-  const pets = await sql`
-    SELECT * FROM pets WHERE id = ${petId} AND owner_id = ${userId}
-  `;
-  return pets.length > 0;
 };

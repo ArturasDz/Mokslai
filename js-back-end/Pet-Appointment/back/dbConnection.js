@@ -29,25 +29,13 @@ const testConnection = async () => {
 //     role VARCHAR(50) NOT NULL DEFAULT 'patient'
 // );
 
-
-// CREATE TABLE pets (
-//     id SERIAL PRIMARY KEY,
-//     user_id INTEGER REFERENCES users(id),
-//     name VARCHAR(255) NOT NULL,
-//     species VARCHAR(100) NOT NULL,
-//     breed VARCHAR(100),
-//     age INTEGER,
-//     weight DECIMAL(5,2),
-//     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-// );
-
-
 // CREATE TABLE appointments (
 //     id SERIAL PRIMARY KEY,
 //     user_id INTEGER REFERENCES users(id),
-//     pet_id INTEGER REFERENCES pets(id),
-//     appointment_date TIMESTAMP NOT NULL,
-//     reason TEXT,
+//     pet_name VARCHAR(255) NOT NULL,
+//     date DATE NOT NULL,
+//     time TIME NOT NULL,
+//     notes TEXT,
 //     status VARCHAR(50) DEFAULT 'pending',
 //     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 // );

@@ -4,8 +4,10 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 function AppointmentForm({ onClose, onSubmit }) {
   const [formData, setFormData] = useState({
-    pet_id: '',
+    pet_name: '',
+    username: '',
     date: '',
+    time: '',
     notes: ''
   });
   const [error, setError] = useState(null);
@@ -59,33 +61,59 @@ function AppointmentForm({ onClose, onSubmit }) {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-gray-700 mb-1">Pet ID</label>
+        <form onSubmit={handleSubmit} className="space-y-2">
+          <div className='flex flex-col'>
+            <label className="block text-gray-700 mb-1">Pet Name</label>
             <input
-              type="number"
-              name="pet_id"
-              value={formData.pet_id}
+              type="text"
+              name="pet_name"
+              value={formData.pet_name}
               onChange={handleChange}
+              placeholder="Pet's name"
               className="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
               required
             />
           </div>
 
-          <div>
-            <label className="block text-gray-700 mb-1">Date & Time</label>
+          <div className='flex flex-col'>
+            <label className="block text-gray-700 mb-1">Pet Owner</label>
             <input
-              type="datetime-local"
+              type="text"
+              name="username"
+              value={formData.username}
+              onChange={handleChange}
+              placeholder="Owner's name"
+              className="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+              required
+            />
+          </div>
+
+          <div className='flex flex-col'>
+            <label className="block text-gray-700 mt-2 mr-7">Date</label>
+            <input
+              type="date"
               name="date"
               value={formData.date}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-half border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
               required
             />
           </div>
 
-          <div>
-            <label className="block text-gray-700 mb-1">Notes</label>
+          <div className='flex flex-col'>
+            <label className="block text-gray-700 mt-2 mr-7">Time</label>
+            <input
+              type="time"
+              name="time"
+              value={formData.time}
+              onChange={handleChange}
+              className="w-half border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+              required
+            />
+          </div>
+
+          <div className='flex flex-col'>
+            <label className="block text-gray-700 mb-1 mr-5">Notes</label>
             <textarea
               name="notes"
               value={formData.notes}
@@ -108,7 +136,7 @@ function AppointmentForm({ onClose, onSubmit }) {
               type="submit"
               className="px-4 py-2 bg-purple-700 text-white rounded hover:bg-purple-800 transition-colors"
             >
-              Save
+              Add Appointment
             </button>
           </div>
         </form>

@@ -1,26 +1,11 @@
 const { sql } = require("../dbConnection");
 
 exports.createUser = async (newUser) => {
-  try {
-    const [user] = await sql`
-      INSERT INTO users (
-        username,
-        email,
-        password,
-        role
-      ) VALUES (
-        ${newUser.username},
-        ${newUser.email},
-        ${newUser.password},
-        ${newUser.role}
-      )
-      RETURNING id, username, email, role
-    `;
-    return user;
-  } catch (error) {
-    console.error('Database error:', error);
-    throw error;
-  }
+  const [user] = await sql`
+  INSERT INTO users ${sql(newUser, "username", "email", "password", "role")}
+  RETURNING *
+  `;
+  return user;
 };
 
 exports.getUserByEmail = async (email) => {
@@ -31,7 +16,7 @@ exports.getUserByEmail = async (email) => {
     `;
     return user;
   } catch (error) {
-    console.error('Database error:', error);
+    console.error("Database error:", error);
     throw error;
   }
 };

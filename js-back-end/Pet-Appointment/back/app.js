@@ -20,6 +20,7 @@ app.use(
 );
 
 
+
 app.use("/api/v1/appointments", appointmentRouter );
 app.use("/api/v1/users", userRouter);
 

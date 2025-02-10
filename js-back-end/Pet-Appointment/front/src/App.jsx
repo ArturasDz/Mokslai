@@ -1,4 +1,3 @@
-import { UserContextProvider } from './contexts/UserContext';
 import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
 import AppointmentForm from './components/AppointmentForm';

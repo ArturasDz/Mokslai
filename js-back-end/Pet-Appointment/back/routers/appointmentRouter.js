@@ -1,6 +1,6 @@
 const express = require("express");
 const appointmentController = require("../controllers/appointmentController");
-const { protect, restrictTo, allowAccessTo } = require("../controllers/authController");
+const { protect, allowAccessTo } = require("../controllers/authController");
 
 const {
   getAllAppointments,

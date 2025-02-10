@@ -1,7 +1,12 @@
 const argon2 = require("argon2");
 const jwt = require("jsonwebtoken");
-const { createUser, getUserByEmail, getUserById } = require("../models/userModel");
+const {
+  createUser,
+  getUserByEmail,
+  getUserById,
+} = require("../models/userModel");
 const AppError = require("../utils/appError");
+
 const signToken = (id) => {
   const token = jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
@@ -45,7 +50,7 @@ exports.signup = async (req, res, next) => {
       username,
       email,
       password: hash,
-      role: role || 'patient' // Default role
+      role: role || "patient", // Default role
     };
 
     const createdUser = await createUser(newUser);
@@ -157,9 +162,9 @@ exports.getAuthenticatedUser = (req, res, next) => {
   try {
     const authedUser = req.user;
     authedUser.password = undefined;
-    res.status(200).json({ 
-      status: "success", 
-      data: authedUser 
+    res.status(200).json({
+      status: "success",
+      data: authedUser,
     });
   } catch (error) {
     next(error);

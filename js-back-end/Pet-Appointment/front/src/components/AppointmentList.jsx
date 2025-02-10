@@ -1,13 +1,14 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import AppointmentForm from './AppointmentForm';
-import { format } from 'date-fns';
+import { useState, useEffect } from "react";
+import axios from "axios";
+import AppointmentForm from "./AppointmentForm";
+import { format } from "date-fns";
 const API_URL = import.meta.env.VITE_API_URL;
+import Footer from "./Footer";
 
 function AppointmentList() {
   const [appointments, setAppointments] = useState([]);
   const [showForm, setShowForm] = useState(false);
-  const [sortBy, setSortBy] = useState('date');
+  const [sortBy, setSortBy] = useState("date");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -20,14 +21,16 @@ function AppointmentList() {
       setLoading(true);
       setError(null);
       const { data: response } = await axios.get(`${API_URL}/appointments`, {
-        withCredentials: true
+        withCredentials: true,
       });
       setAppointments(response.data || []); // Užtikriname, kad visada bus masyvas
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        setError(error.response?.data?.message || 'Failed to fetch appointments');
+        setError(
+          error.response?.data?.message || "Failed to fetch appointments"
+        );
       } else {
-        setError('An unexpected error occurred');
+        setError("An unexpected error occurred");
       }
       setAppointments([]); // Klaidos atveju nustatome tuščią masyvą
     } finally {
@@ -38,29 +41,46 @@ function AppointmentList() {
   const handleDelete = async (id) => {
     try {
       await axios.delete(`${API_URL}/appointments/${id}`, {
-        withCredentials: true
+        withCredentials: true,
       });
       fetchAppointments();
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        setError(error.response?.data?.message || 'Failed to delete appointment');
+        setError(
+          error.response?.data?.message || "Failed to delete appointment"
+        );
       } else {
-        setError('An unexpected error occurred');
+        setError("An unexpected error occurred");
+      }
+    }
+  };
+
+  const handleEdit = async (id) => {
+    try {
+      await axios.put(`${API_URL}/appointments/${id}`, {
+        withCredentials: true,
+      });
+      fetchAppointments();
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setError(error.response?.data?.message || "Failed to edit appointment");
+      } else {
+        setError("An unexpected error occurred");
       }
     }
   };
 
   const sortAppointments = (appointmentsToSort) => {
     if (!Array.isArray(appointmentsToSort)) return [];
-    
+
     return [...appointmentsToSort].sort((a, b) => {
       switch (sortBy) {
-        case 'date':
+        case "date":
           return new Date(a.date) - new Date(b.date);
-        case 'petName':
-          return (a.pet_name || '').localeCompare(b.pet_name || '');
-        case 'ownerName':
-          return (a.owner_email || '').localeCompare(b.owner_email || '');
+        case "petName":
+          return (a.pet_name || "").localeCompare(b.pet_name || "");
+        case "ownerName":
+          return (a.owner_email || "").localeCompare(b.owner_email || "");
         default:
           return 0;
       }
@@ -76,16 +96,16 @@ function AppointmentList() {
   }
 
   return (
-    <div className="container mx-auto p-4 max-w-4xl">
+    <div className="container mx-auto pt-4 w-3/4">
       <h1 className="text-3xl text-center text-purple-800 font-bold mb-6">
         Pets Medicare
       </h1>
-      
-      <button 
+
+      <button
         onClick={() => setShowForm(true)}
         className="w-full bg-purple-700 text-white py-2 mb-6 rounded-lg hover:bg-purple-800 transition-colors flex items-center justify-center gap-2"
       >
-        <span className="text-xl">+</span> Add Appointment
+        <span className="text-xl pb-1">+</span> Add Appointment
       </button>
 
       {error && (
@@ -95,14 +115,14 @@ function AppointmentList() {
       )}
 
       {showForm && (
-        <AppointmentForm 
+        <AppointmentForm
           onClose={() => setShowForm(false)}
           onSubmit={fetchAppointments}
         />
       )}
 
       <div className="flex justify-end mb-4">
-        <select 
+        <select
           className="border p-2 rounded bg-purple-700 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value)}
@@ -115,36 +135,40 @@ function AppointmentList() {
 
       <div className="space-y-4">
         {sortAppointments(appointments).map((appointment) => (
-          <div 
-            key={appointment.id} 
+          <div
+            key={appointment.id}
             className="border rounded-lg p-4 relative hover:shadow-lg transition-shadow bg-white"
           >
             <button
               onClick={() => handleDelete(appointment.id)}
-              className="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-xl"
+              className="absolute top-1 right-2 text-gray-500 hover:text-red-500 border-1 border-rounded text-xl"
               title="Delete appointment"
             >
-              ×
+              X
             </button>
+            <button onClick={() => handleEdit(appointment.id)}
+              className="absolute top-12 right-1 text-white hover:text-blue-500 text-md bg-purple-800
+              px-2 py-1 mr-1 rounded-md"
+              title="Edit appointment">EDIT</button>
             <h3 className="text-xl text-purple-700 font-semibold">
               {appointment.pet_name}
             </h3>
-            <p className="text-gray-600">
-              Owner: {appointment.owner_email}
-            </p>
-            <p className="text-gray-700 mt-2">
-              {appointment.notes}
-            </p>
+            <p className="text-gray-600">Owner: {appointment.user_id}</p>
+            <p className="text-gray-700 mt-2">{appointment.notes}</p>
             <p className="text-right text-gray-500 mt-2">
-              {format(new Date(appointment.date), 'MMM-d h:mma')}
+              {format(new Date(appointment.date), "MMM-d h:mma")}
             </p>
             <div className="absolute top-2 right-8 text-sm">
-              <span className={`px-2 py-1 rounded-full ${
-                appointment.status === 'confirmed' ? 'bg-green-100 text-green-800' :
-                appointment.status === 'cancelled' ? 'bg-red-100 text-red-800' :
-                'bg-yellow-100 text-yellow-800'
-              }`}>
-                {appointment.status || 'pending'}
+              <span
+                className={`px-2 py-1 rounded-full ${
+                  appointment.status === "confirmed"
+                    ? "bg-green-100 text-green-800"
+                    : appointment.status === "cancelled"
+                    ? "bg-red-100 text-red-800"
+                    : "bg-yellow-100 text-yellow-800"
+                }`}
+              >
+                {appointment.status || "pending"}
               </span>
             </div>
           </div>
@@ -156,6 +180,7 @@ function AppointmentList() {
           </div>
         )}
       </div>
+      <Footer />
     </div>
   );
 }
