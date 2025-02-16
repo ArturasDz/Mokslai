@@ -10,6 +10,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 function SignupForm() {
   const [error, setError] = useState(null);
+
   const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
 

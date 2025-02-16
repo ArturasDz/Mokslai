@@ -32,4 +32,14 @@ appointmentRouter
   .patch(updateAppointment)
   .delete(deleteAppointment);
 
+// Admin only routes
+appointmentRouter
+  .route("/admin/all")
+  .get(allowAccessTo("admin"), getAllAppointments);
+
+appointmentRouter
+  .route("/admin/:id")
+  .patch(allowAccessTo("admin"), updateAppointment)
+  .delete(allowAccessTo("admin"), deleteAppointment);
+
 module.exports = appointmentRouter;
