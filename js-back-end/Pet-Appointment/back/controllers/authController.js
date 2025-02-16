@@ -1,7 +1,12 @@
 const argon2 = require("argon2");
 const jwt = require("jsonwebtoken");
-const { createUser, getUserByEmail, getUserById } = require("../models/userModel");
+const {
+  createUser,
+  getUserByEmail,
+  getUserById,
+} = require("../models/userModel");
 const AppError = require("../utils/appError");
+
 const signToken = (id) => {
   const token = jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
@@ -16,6 +21,8 @@ const sendCookie = (token, res) => {
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
     ),
     httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict'
   };
 
   res.cookie("jwt", token, cookieOptions);
@@ -45,7 +52,7 @@ exports.signup = async (req, res, next) => {
       username,
       email,
       password: hash,
-      role: role || 'patient' // Default role
+      role: role || "patient", // Default role
     };
 
     const createdUser = await createUser(newUser);
@@ -96,34 +103,39 @@ exports.login = async (req, res, next) => {
 
 exports.protect = async (req, res, next) => {
   try {
-    console.log(req);
-
-    //you need to istall cookie-parser and write middleware to use req.cookies
     let token = req.cookies?.jwt;
 
     if (!token) {
-      throw new AppError(
-        "You are not logged in! Please log in to get accessssss.",
-        401
-      );
+      return res.status(401).json({
+        status: 'fail',
+        message: 'Prašome prisijungti iš naujo'
+      });
     }
 
-    // 2) Verification token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    // console.log(decoded);
+    try {
+      // Verification token
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      
+      // Check if user still exists
+      const currentUser = await getUserById(decoded.id);
+      if (!currentUser) {
+        return res.status(401).json({
+          status: 'fail',
+          message: 'Vartotojas nebeegzistuoja'
+        });
+      }
 
-    // 3) Check if user still exists
-    const currentUser = await getUserById(decoded.id);
-    if (!currentUser) {
-      throw new AppError(
-        "The user belonging to this token does no longer exist.",
-        401
-      );
+      req.user = currentUser;
+      next();
+    } catch (err) {
+      if (err.name === 'JsonWebTokenError' || err.name === 'TokenExpiredError') {
+        return res.status(401).json({
+          status: 'fail',
+          message: 'Sesija pasibaigė, prašome prisijungti iš naujo'
+        });
+      }
+      throw err;
     }
-
-    // GRANT ACCESS TO PROTECTED ROUTE, add user to req object
-    req.user = currentUser;
-    next();
   } catch (error) {
     next(error);
   }
@@ -157,9 +169,9 @@ exports.getAuthenticatedUser = (req, res, next) => {
   try {
     const authedUser = req.user;
     authedUser.password = undefined;
-    res.status(200).json({ 
-      status: "success", 
-      data: authedUser 
+    res.status(200).json({
+      status: "success",
+      data: authedUser,
     });
   } catch (error) {
     next(error);

@@ -1,6 +1,6 @@
 const express = require("express");
 const appointmentController = require("../controllers/appointmentController");
-const { protect, restrictTo, allowAccessTo } = require("../controllers/authController");
+const { protect, allowAccessTo } = require("../controllers/authController");
 
 const {
   getAllAppointments,
@@ -31,15 +31,5 @@ appointmentRouter
   .get(getAppointment)
   .patch(updateAppointment)
   .delete(deleteAppointment);
-
-// Admin only routes
-appointmentRouter
-  .route("/admin/all")
-  .get(allowAccessTo("admin"), getAllAppointments);
-
-appointmentRouter
-  .route("/admin/:id")
-  .patch(allowAccessTo("admin"), updateAppointment)
-  .delete(allowAccessTo("admin"), deleteAppointment);
 
 module.exports = appointmentRouter;

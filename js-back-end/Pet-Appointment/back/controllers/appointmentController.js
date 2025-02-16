@@ -81,19 +81,12 @@ exports.getAppointmentsByDateRange = async (req, res, next) => {
 // CREATE APPOINTMENT
 exports.createAppointment = async (req, res, next) => {
   try {
-    const { pet_id, date, notes } = req.body;
+    const { pet_name, username, date, time, notes } = req.body;
 
-    if (!pet_id || !date) {
-      return next(new AppError("Please provide pet_id and date", 400));
+    if (!pet_name || !username || !date || !time || !notes) {
+      return next(new AppError("Please provide all required fields", 400));
     }
-
-    const isPetOwner = await appointmentModel.verifyPetOwner(pet_id, req.user.id);
-    if (!isPetOwner) {
-      return next(new AppError("Pet does not belong to user", 403));
-    }
-
-    const appointment = await appointmentModel.create(pet_id, date, notes);
-
+    const appointment = await appointmentModel.create(pet_name, username, date, time, notes);
     res.status(201).json({
       status: "success",
       data: appointment
@@ -107,15 +100,15 @@ exports.createAppointment = async (req, res, next) => {
 exports.updateAppointment = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { date, notes, status, rating } = req.body;
+    const { date, time, notes, status } = req.body;
 
     if (!id || isNaN(id)) {
       return next(new AppError("Invalid appointment ID", 400));
     }
 
     const appointment = req.user.role === "admin"
-      ? await appointmentModel.updateByAdmin(id, date, notes, status)
-      : await appointmentModel.updateByUser(id, req.user.id, date, notes, rating);
+      ? await appointmentModel.updateByAdmin(id, date, time, notes, status)
+      : await appointmentModel.updateByUser(id, req.user.id, date, time, notes);
 
     if (!appointment) {
       return next(new AppError("Appointment not found or unauthorized", 404));
