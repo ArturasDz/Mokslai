@@ -14,6 +14,20 @@ function AppointmentList() {
   const [editingAppointment, setEditingAppointment] = useState(null);
   const [user, setUser] = useState(null);
 
+
+function changeLang() {
+ const language = getCookie("lang");
+ if ( test == "en") {
+  setCookie("lang", "es", 365);
+  window.location.reload();
+ } else {
+  setCookie("lang", "en", 365);
+  window.location.reload();
+ }
+}
+
+
+
   useEffect(() => {
     fetchAppointments();
     const fetchUser = async () => {
@@ -78,6 +92,7 @@ function AppointmentList() {
         time: updatedData.time.substring(0, 5),
       };
 
+
       console.log('Formatted data:', formattedData);
 
       const response = await axios.patch(`${API_URL}/appointments/${id}`, formattedData, {
@@ -139,6 +154,8 @@ function AppointmentList() {
     <div className="container mx-auto pt-4 w-3/4">
       <h1 className="text-3xl text-center text-purple-800 font-bold mb-6">
         Pets Medicare
+
+        <button className="btn" onClick={changeLang}>asdas </button>
       </h1>
 
       <button
