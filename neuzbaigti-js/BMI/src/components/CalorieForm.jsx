@@ -9,7 +9,7 @@ export class CalorieForm extends React.PureComponent {
     super(props);
     this.state = {
       age: "",
-      gender: "",
+      gender: "", 
       height: "",
       weight: "",
       activity: "",
@@ -17,7 +17,7 @@ export class CalorieForm extends React.PureComponent {
       measurementSelected: false,
       result: "",
       showResult: false,
-      showForm: "",
+      resultForm: "",
     };
     this.handleMeasurementChange = this.handleMeasurementChange.bind(this);
     this.changeGender = this.changeGender.bind(this);
@@ -54,6 +54,16 @@ export class CalorieForm extends React.PureComponent {
   }
 
   validEntry() {
+    console.log("Age:", this.state.age);
+    console.log("Gender:", this.state.gender);
+    console.log("Height:", this.state.height);
+    console.log("Weight:", this.state.weight);
+    console.log("Activity:", this.state.activity);
+    console.log("Measurement:", this.state.measurement);
+    console.log("Measurement selected:", this.state.measurementSelected);
+
+    // ... rest of the function ...
+
     const fields = [
       this.state.age,
       this.state.gender,
@@ -62,12 +72,15 @@ export class CalorieForm extends React.PureComponent {
       this.state.activity,
       this.state.measurement,
     ];
-    var i;
-    for (i in fields) {
-      if (fields[i].length === 0) {
+    for (let field of fields) {
+      if (!field) {
         return false;
       }
     }
+
+    const age = parseInt(this.state.age, 10);
+    const height = parseInt(this.state.height, 10);
+    const weight = parseInt(this.state.weight, 10);
 
     if (this.state.age < 0 || this.state.age > 120) {
       return false;
@@ -86,7 +99,7 @@ export class CalorieForm extends React.PureComponent {
         showResult: true,
         resultForm: (
           <Result
-            calories={this.state.result}
+            calories={this.calculateCalories()}
             measurementType={this.state.measurement}
           />
         ),
@@ -120,7 +133,7 @@ export class CalorieForm extends React.PureComponent {
       case "lightly active, exercise 1-3 days per week":
         bmr = bmr * 1.375;
         break;
-      case "moderately active, exercise 6-7 days per week":
+      case "Moderate exercise, 3 to 5 days per week":
         bmr = bmr * 1.55;
         break;
       case "very active, intense exercise everyday":
@@ -134,12 +147,14 @@ export class CalorieForm extends React.PureComponent {
   }
 
   render() {
+    console.log('Gender:', this.state.gender);
     return (
       <div>
         <div class="entry-form">
           <form>
             <p>Select unit of measurement:</p>
             <div class="measurement-choice">
+              <label for="metric">Metric (kg/cm)</label>
               <input
                 type="radio"
                 id="metric"
@@ -147,7 +162,7 @@ export class CalorieForm extends React.PureComponent {
                 checked={this.state.measurement === "metric"}
                 onChange={this.handleMeasurementChange}
               />
-              <label for="metric">Metric (kg/cm)</label>
+              <label for="female">Imperial (lbs/feet+inches)</label>
               <input
                 type="radio"
                 id="imperial"
@@ -155,7 +170,6 @@ export class CalorieForm extends React.PureComponent {
                 checked={this.state.measurement === "imperial"}
                 onChange={this.handleMeasurementChange}
               />
-              <label for="female">Imperial (lbs/feet+inches)</label>
             </div>
 
             <div class="gender-choice">
@@ -194,7 +208,6 @@ export class CalorieForm extends React.PureComponent {
             {this.state.measurementSelected && (
               <button
                 type="button"
-                class="btn btn-primary"
                 id="calculate-btn"
                 onClick={this.getCalories}
               >
@@ -204,6 +217,20 @@ export class CalorieForm extends React.PureComponent {
           </form>
         </div>
         <div>{this.state.showResult && this.state.resultForm}</div>
+        <div className="card grid grid-cols-6 ">
+          <div className="col-span-3 bg-blue-200 p-12 m-2 rounded-md">
+            photo
+          </div>
+          <div className="col-span-3 row-span-2 bg-gray-200 m-2 rounded-md">
+            description
+          </div>
+          <div className="bg-pink-100 p-6 m-2 rounded-md">photo1</div>
+          <div className="bg-pink-300 m-2 rounded-md">photo2</div>
+          <div className="bg-pink-500 m-2 rounded-md">photo3</div>
+          <div className="col-span-6 bg-yellow-300 p-6 m-2 rounded-md">
+            reviews
+          </div>
+        </div>
       </div>
     );
   }

@@ -26,22 +26,22 @@ export class Result extends React.Component {
           <table>
             <tr>
               <th></th>
-              <th>Gaint Weight</th>
+              <th className="pl-20 pr-20">Gain Weight</th>
               <th>Lose Weight</th>
             </tr>
             <tr>
               <td>
                 {this.state.weightValue} {this.state.weightType} per week
               </td>
-              <td>{this.props.calories + 500}</td>
-              <td>{this.props.calories - 500}</td>
+              <td className="pl-20">{this.props.calories + 500} kcal per day</td>
+              <td>{this.props.calories - 500} kcal per day</td>
             </tr>
             <tr>
               <td>
                 {this.state.weightValue * 2} {this.state.weightType} per week
               </td>
-              <td>{this.props.calories + 1000}</td>
-              <td>{this.props.calories - 1000}</td>
+              <td className="pl-20">{this.props.calories + 1000} kcal per day</td>
+              <td>{this.props.calories - 1000} kcal per day</td>
             </tr>
           </table>
         </form>
