@@ -1,0 +1,18 @@
+# client url 
+FRONTEND_URL = http://localhost:5173
+
+# app port
+PORT = 3001
+
+# database config
+DB_HOST = pavasario-babausiai-caloriescalculator.g.aivencloud.com
+DB_PORT = 15411
+DB_NAME = recipe_book
+DB_USER = avnadmin
+DB_PASS = AVNS_mDNrbrrphXc4vQ_Be_R
+DB_SSL = require
+
+# jwt config
+JWT_SECRET = pavasarioBabausiai
+JWT_EXPIRES_IN = 90d
+JWT_COOKIE_EXPIRES_IN = 90

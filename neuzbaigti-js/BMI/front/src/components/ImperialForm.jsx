@@ -47,23 +47,26 @@ export class ImperialForm extends React.Component {
   render() {
     return (
       <div>
-        <label>Weight:</label>
+        <label for="weight">Weight:</label>
         <input
           type="text"
+          id="weight"
           maxLength="6"
           placeholder="(lb)"
           onChange={this.handleWeightChange}
         />
-        <label>Age:</label>
+        <label for="age">Age:</label>
         <input
           type="text"
+          id="age"
           maxLength="3"
           placeholder="(years)"
           onChange={this.handleAgeChange}
         />
-        <label>Height:</label>
+        <label for="height">Height:</label>
         <input
           type="text"
+          id="height"
           maxLength="5"
           placeholder="(ft)"
           onChange={this.handleFeetChange}

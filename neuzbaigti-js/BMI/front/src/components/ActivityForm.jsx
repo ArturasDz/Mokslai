@@ -1,6 +1,6 @@
 import React from "react";
 
-export class ActivityLevel extends React.Component {
+export class ActivityForm extends React.Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
@@ -12,10 +12,10 @@ export class ActivityLevel extends React.Component {
   }
   render() {
     return (
-      <div>
-        <label>Activity level:</label>
-        <select name="activity" id="activity" onChange={this.handleChange}>
-          <optgroup>
+      <div className="flex flex-col">
+        <label for="activity" className="font-bold">Activity level:</label>
+        <select  className="w-64 bg-gray-200 rounded-md text-gray-500 mb-2" name="activity" id="activity" onChange={this.handleChange} >
+          <optgroup label="Activity level">
             <option value="" disabled selected>
               Select your activity level
             </option>

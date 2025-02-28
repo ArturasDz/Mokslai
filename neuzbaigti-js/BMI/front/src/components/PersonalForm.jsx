@@ -1,10 +1,11 @@
 import React from "react";
 import { MetricForm } from "./MetricForm";
 import { ImperialForm } from "./ImperialForm";
-import { ActivityLevel } from "./ActivityLevel";
+import { ActivityForm } from "./ActivityForm";
+import  FormSelector  from "./FormSelector";
 import { Result } from "./Result";
 
-export class CalorieForm extends React.PureComponent {
+export class PersonalForm extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -62,7 +63,6 @@ export class CalorieForm extends React.PureComponent {
     console.log("Measurement:", this.state.measurement);
     console.log("Measurement selected:", this.state.measurementSelected);
 
-    // ... rest of the function ...
 
     const fields = [
       this.state.age,
@@ -136,10 +136,10 @@ export class CalorieForm extends React.PureComponent {
       case "Moderate exercise, 3 to 5 days per week":
         bmr = bmr * 1.55;
         break;
-      case "very active, intense exercise everyday":
+      case "Intense exercise everyday":
         bmr = bmr * 1.725;
         break;
-      case "extra active, very hard or intense exercise or very physical job":
+      case "Very hard or intense exercise or very physical job":
         bmr = bmr * 1.9;
         break;
     }
@@ -149,12 +149,12 @@ export class CalorieForm extends React.PureComponent {
   render() {
     console.log('Gender:', this.state.gender);
     return (
-      <div>
+      <div className="bg-gray-300">
         <div class="entry-form">
           <form>
             <p>Select unit of measurement:</p>
             <div class="measurement-choice">
-              <label for="metric">Metric (kg/cm)</label>
+              <label for="metric" className="font-bold">Metric <span className="font-normal">(kg/cm)</span> </label>
               <input
                 type="radio"
                 id="metric"
@@ -162,7 +162,7 @@ export class CalorieForm extends React.PureComponent {
                 checked={this.state.measurement === "metric"}
                 onChange={this.handleMeasurementChange}
               />
-              <label for="female">Imperial (lbs/feet+inches)</label>
+            <label for="imperial" className="font-bold ml-2">Imperial <span className="font-normal">(lbs/feet+inches)</span> </label>
               <input
                 type="radio"
                 id="imperial"
@@ -172,8 +172,8 @@ export class CalorieForm extends React.PureComponent {
               />
             </div>
 
-            <div class="gender-choice">
-              <label for="gender">Gender</label>
+            <div class="gender-choice  ">
+              <label for="gender" className="font-bold">Gender</label>
               <select
                 name="gender"
                 id="gender"
@@ -187,7 +187,7 @@ export class CalorieForm extends React.PureComponent {
                 <option value="female">Female</option>
               </select>
             </div>
-
+<div className="flex">
             {this.state.measurement === "metric" && (
               <MetricForm
                 weightChange={this.changeWeight}
@@ -202,11 +202,14 @@ export class CalorieForm extends React.PureComponent {
                 heightChange={this.changeHeight}
               />
             )}
+            <FormSelector />
+            </div>
             {this.state.measurementSelected && (
-              <ActivityLevel onChange={this.changeActivity} />
+              <ActivityForm onChange={this.changeActivity} />
             )}
             {this.state.measurementSelected && (
               <button
+              className="border-1 rounded-md bg-blue-400 hover:bg-blue-500 active:bg-blue-600 font-bold text-white p-2"
                 type="button"
                 id="calculate-btn"
                 onClick={this.getCalories}
@@ -217,20 +220,6 @@ export class CalorieForm extends React.PureComponent {
           </form>
         </div>
         <div>{this.state.showResult && this.state.resultForm}</div>
-        <div className="card grid grid-cols-6 ">
-          <div className="col-span-3 bg-blue-200 p-12 m-2 rounded-md">
-            photo
-          </div>
-          <div className="col-span-3 row-span-2 bg-gray-200 m-2 rounded-md">
-            description
-          </div>
-          <div className="bg-pink-100 p-6 m-2 rounded-md">photo1</div>
-          <div className="bg-pink-300 m-2 rounded-md">photo2</div>
-          <div className="bg-pink-500 m-2 rounded-md">photo3</div>
-          <div className="col-span-6 bg-yellow-300 p-6 m-2 rounded-md">
-            reviews
-          </div>
-        </div>
       </div>
     );
   }
