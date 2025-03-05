@@ -6,6 +6,12 @@ export class MetricForm extends React.Component {
     this.handleWeightChange = this.handleWeightChange.bind(this);
     this.handleAgeChange = this.handleAgeChange.bind(this);
     this.handleHeightChange = this.handleHeightChange.bind(this);
+    this.state = {
+      medicalIndications: "",
+      religiousIndications: "",
+      unwantedFoods: "",
+      wantedFoods: ""
+    };
   }
 
   handleWeightChange(e) {
@@ -70,7 +76,7 @@ export class MetricForm extends React.Component {
               placeholder="Enter your height"
               onChange={this.handleHeightChange}
             />
-          </div>
+          </div>       
         </form>
         <div className="flex justify-end">
           <button className="bg-blue-500 hover:bg-blue-700 text-white font-semibold p-1 px-2 rounded-md ">
