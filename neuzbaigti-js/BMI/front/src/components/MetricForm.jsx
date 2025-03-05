@@ -78,11 +78,11 @@ export class MetricForm extends React.Component {
             />
           </div>       
         </form>
-        <div className="flex justify-end">
+        {/* <div className="flex justify-end">
           <button className="bg-blue-500 hover:bg-blue-700 text-white font-semibold p-1 px-2 rounded-md ">
             <a href="/activity-level">next</a>
           </button>
-        </div>
+        </div> */}
       </div>
     );
   }

@@ -30,7 +30,7 @@ export class EatingHabitList extends React.Component {
   render() {
     return (
       <div className="eating-habit-list">
-        <h2>Select Your Eating Habits</h2>
+        <h2 className="text-blue-500 font-bold">Select Your Eating Habits:</h2>
         {this.state.habits.map((habit) => (
           <div key={habit.id}>
             <label>

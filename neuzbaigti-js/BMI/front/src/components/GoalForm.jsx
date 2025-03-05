@@ -4,8 +4,8 @@ export class GoalForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      goal: "maintain", // Numatytoji vertė
-      weightChange: 0 // Svorio pokytis per savaitę
+      goal: "maintain", // SVORTIO PALAIKYMAS 
+      weightChange: 0 // SVORIO POKYTIS PER SAV.
     };
   }
 
@@ -37,6 +37,7 @@ export class GoalForm extends React.Component {
               Desired weight change per week (in kg):
               <input
                 type="number"
+                max={2}
                 value={this.state.weightChange}
                 onChange={this.handleWeightChange}
                 placeholder="Enter weight change"

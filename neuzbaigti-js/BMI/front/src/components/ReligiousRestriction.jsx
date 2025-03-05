@@ -20,7 +20,6 @@ export class ReligiousRestriction extends React.Component {
         restriction.id === id ? { ...restriction, selected: !restriction.selected } : restriction
       );
 
-      // Pranešti tėviniam komponentui apie pasirinkimus
       this.props.onRestrictionChange(updatedRestrictions.filter(restriction => restriction.selected));
       return { restrictions: updatedRestrictions };
     });
@@ -29,7 +28,7 @@ export class ReligiousRestriction extends React.Component {
   render() {
     return (
       <div className="religious-restriction">
-        <h2>Select Your Religious Restrictions</h2>
+        <h2 className="text-green-500 font-bold">Select Your Religious Restrictions:</h2>
         {this.state.restrictions.map((restriction) => (
           <div key={restriction.id}>
             <label>
@@ -47,4 +46,6 @@ export class ReligiousRestriction extends React.Component {
   }
 }
 
-export default ReligiousRestriction;
+export default ReligiousRestriction
+
+

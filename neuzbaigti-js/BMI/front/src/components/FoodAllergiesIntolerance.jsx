@@ -33,7 +33,7 @@ export class FoodAllergiesIntolerance extends React.Component {
   render() {
     return (
       <div className="food-allergies-intolerance">
-        <h2>Select Your Food Allergies and Intolerances</h2>
+        <h2 className="text-pink-500 font-bold">Select Your Food Allergies and Intolerances:</h2>
         {this.state.allergies.map((allergy) => (
           <div key={allergy.id}>
             <label>
